@@ -49,32 +49,38 @@ typedef struct s_philosopher
 {
     pthread_t		thread;
 	int				id;
-    //fork
     int             left_fork;
     int             right_fork;
-    
     int             num_of_times_ate;
+    int             time_to_die;
+    int             time_to_eat;
+    int             time_to_sleep;
 
     pthread_mutex_t	*forks;
-	pthread_mutex_t	write;
 
 }					t_philosopher;
 
 typedef struct s_config
 {
+    int             number_of_thread;
     int             num_philo;
-    int             time_to_die;
-    int             time_to_eat;
-    int             time_to_sleep;
     int             num_of_times_eat;
+
+    int             philo_dead;
+    long long       timing;
+    pthread_mutex_t	write;
     pthread_t       ping;
     t_philosopher   *philo;
 
 }                   t_config;
 
-int     create_philos(t_config *instance);
-void    fill_philo_struct(t_config *instance, int lf, int rf);
-int	    ft_atoi(const char *str);
-int     init_config(int argc, char **argv, t_config *config);
-
+int         create_philos(t_config *instance, int argc, char **argv);
+int         fill_philo_struct(t_config *instance, int lf, int rf, int argc, char **argv);
+int	        ft_atoi(const char *str);
+int         init_config(int argc, char **argv, t_config *config);
+int	        create_threads(t_config *config);
+long long	get_time(void);
+/*
+void	    *routine(void *args)
+*/
 #endif

@@ -5,10 +5,8 @@ int main(int argc, char **argv)
 
     t_config demo;
 
-    init_config(argc, argv, &demo);
+    create_philos(&demo, argc, argv);
     printf(" number of philo : %d ", demo.num_philo );
-    create_philos(&demo);
-
     int i = 0;
     while(i < 5){
 
