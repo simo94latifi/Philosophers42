@@ -115,10 +115,70 @@ int create_philos(t_config *instance, int argc, char **argv)
 	return (TRUE);
 }
 
+int	create_threads(t_config *instance)
+{
+	int i;
+
+	i = 0;
+	instance->philo_dead = FALSE;
+	instance->timing = get_time();
+	if(pthread_mutex_init(&instance->write, NULL) != 0)
+		return (FALSE);
+	/*
+	if(pthread_mutex_init(&instance->lock, NULL) != 0)
+		return (FALSE);
+	*/
+	while (i < instance->num_philo)
+	{
+		instance->number_of_thread = i;
+		if(pthread_create(&instance->philo[i].thread, NULL, &routine, (void *) instance) != 0)
+			return (FALSE);
+		i++;
+		usleep(1000);
+	}
+	if (join_threads(instance) == FALSE)
+		return (FALSE);
+	return (TRUE);
+	
+}
+int	join_threads(t_config *instance)
+{
+	int	i;
+
+	i = 0;
+	while (i < instance->num_philo)
+	{
+		if (pthread_join(instance->philo[i].thread, NULL) != 0)
+			return (FALSE);
+		i++;
+	}
+	
+	if (pthread_join(instance->ping, NULL) != 0)
+		return (FALSE);
+	
+	return (TRUE);
+}
+
+int create_forks(t_config *instance)
+{
+	int i;
+	
+	i = 0;
+	instance->forks = malloc(sizeof(pthread_mutex_t) * instance->num_philo + 1);
+	if(instance->forks == NULL)
+		return (FALSE);
+	while(i < instance->num_philo)
+	{
+		if(pthread_mutex_init(&instance->forks[i], NULL) != 0)
+			return (FALSE);
+	}
+	return (TRUE);
+}
+
 
 int fill_philo_struct(t_config *instance, int lf, int rf, int argc, char **argv){
 
-	
+	printf("fillo id : %d \n", lf + 1);
     instance->philo[lf].id = lf + 1;
 	instance->philo[lf].num_of_times_ate = 0;
 	instance->philo[lf].left_fork = lf;
@@ -164,10 +224,36 @@ int	ft_atoi(const char *str)
 	return (res * s);
 }
 
+long long	delta_time(long long time)
+{
+	if (time > 0)
+		return (get_time() - time);
+	return (0);
+}
+
 long long	get_time(void)
 {
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
 	return ((time.tv_sec * 1000) + (time.tv_usec * 0.001));
+}
+
+int	philo_print(t_config *instance, int id, char *status)
+{
+	long long	now;
+
+	now = delta_time(instance->timing);
+	if (instance->philo_dead == TRUE)
+		return (FALSE);
+	pthread_mutex_lock(&instance->write);
+	if (instance->philo_dead == TRUE)
+	{
+		pthread_mutex_unlock(&instance->write);
+		return (FALSE);
+	}
+	else
+		printf("%-10lld %-3d %-30s \n", now, id, status);
+	pthread_mutex_unlock(&instance->write);
+	return (TRUE);
 }

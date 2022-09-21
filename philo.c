@@ -6,6 +6,9 @@ int main(int argc, char **argv)
     t_config demo;
 
     create_philos(&demo, argc, argv);
+
+    create_threads(&demo);
+    /*
     printf(" number of philo : %d ", demo.num_philo );
     int i = 0;
     while(i < 5){
@@ -16,6 +19,7 @@ int main(int argc, char **argv)
         
         i++;
     }
+    */
 
     return (0);
 
