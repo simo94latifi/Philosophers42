@@ -9,7 +9,9 @@ int create_philos(t_config *instance, int argc, char **argv)
     instance->philo = malloc(sizeof(t_philosopher) * (instance->num_philo + 1));
     if (instance->philo == NULL)
         return (FALSE);
-    i = 0;
+	if (create_forks(instance) == FALSE)
+		return FALSE; 
+    i = 0;	
     j= 1;
     while( j <  instance->num_philo)
     {
@@ -75,6 +77,7 @@ int create_forks(t_config *instance)
 	{
 		if(pthread_mutex_init(&instance->forks[i], NULL) != 0)
 			return (FALSE);
+		i++;
 	}
 	return (TRUE);
 }
@@ -85,6 +88,9 @@ int fill_philo_struct(t_config *instance, int lf, int rf, int argc, char **argv)
     instance->philo[lf].id = lf + 1;
 	instance->philo[lf].num_of_times_ate = 0;
 	//instance->forks[instance->philo[lf].fork->left] = lf;
+
+
+
 	instance->philo[lf].fork->left = lf;
 	instance->philo[lf].fork->right = rf;
 
