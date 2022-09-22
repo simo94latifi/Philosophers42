@@ -1,99 +1,6 @@
 #include "philo.h"
 
-/*
 
-int init_config(int argc, char **argv, t_config *config)
-{
-
-}
-
-int	create_threads(t_config *config)
-{
-	int	i;
-
-	i = 0;
-	config->philo_dead = FALSE;
-	config->timing = get_time();
-	if (pthread_mutex_init(&config->write, NULL) != 0)
-		return (FALSE);
-	while (i < config->num_philo)
-	{
-		//config->id = i;
-		if (pthread_create(&config->philo[i].thread,
-				NULL, &routine, (void *) config) != 0)
-			return (FALSE);
-		i++;
-		usleep(1000);
-	}
-	if (pthread_create(&config->ping, NULL, &checker, (void *) config) != 0)
-		return (FALSE);
-	usleep(1000);
-	if (join_threads(config) == FALSE)
-		return (FALSE);
-	return (TRUE);
-}
-
-
-int	join_threads(t_config *config)
-{
-	int	i;
-
-	i = 0;
-	while (i < config->num_philo)
-	{
-		if (pthread_join(config->philo[i].thread, NULL) != 0)
-			return (FALSE);
-		i++;
-	}
-	if (pthread_join(config->ping, NULL) != 0)
-		return (FALSE);
-	return (TRUE);
-}
-
-void	*checker(void *args)
-{
-	t_config	*config;
-	int		i;
-
-	config = (t_config *)args;
-	i = 0;
-	if (config->num_of_times_eat > 0)
-	{
-		while (config->num_of_times_eat > config->philo[i].num_of_times_ate
-			&& config->philo_dead == FALSE)
-		{
-			if (philo_is_dead(config, &i) == TRUE)
-				break ;
-		}
-	}
-	else
-	{
-		while (config->philo_dead == FALSE)
-		{
-			if (philo_is_dead(config, &i) == TRUE)
-				break ;
-		}
-	}
-	return (NULL);
-}
-
-int	philo_is_dead(t_config *config, int *i)
-{
-	int	time;
-
-	if (*i == config->num_philo)
-		*i = 0;
-	time = delta_time(config->philo[*i].time_to_die);
-	if (time > main->input.time_to_die)
-	{
-		philo_print(main, main->philo[*i].id, PINK, DIED);
-		main->philo_dead = TRUE;
-		return (TRUE);
-	}
-	i++;
-	return (FALSE);
-}
-*/
 int create_philos(t_config *instance, int argc, char **argv)
 {
     int i;
@@ -124,10 +31,7 @@ int	create_threads(t_config *instance)
 	instance->timing = get_time();
 	if(pthread_mutex_init(&instance->write, NULL) != 0)
 		return (FALSE);
-	/*
-	if(pthread_mutex_init(&instance->lock, NULL) != 0)
-		return (FALSE);
-	*/
+	
 	while (i < instance->num_philo)
 	{
 		instance->number_of_thread = i;
@@ -178,11 +82,11 @@ int create_forks(t_config *instance)
 
 int fill_philo_struct(t_config *instance, int lf, int rf, int argc, char **argv){
 
-	printf("fillo id : %d \n", lf + 1);
     instance->philo[lf].id = lf + 1;
 	instance->philo[lf].num_of_times_ate = 0;
-	instance->philo[lf].left_fork = lf;
-	instance->philo[lf].right_fork = rf;
+	//instance->forks[instance->philo[lf].fork->left] = lf;
+	instance->philo[lf].fork->left = lf;
+	instance->philo[lf].fork->right = rf;
 
     if (argc == 5 || argc == 6)
 	{

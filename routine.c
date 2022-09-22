@@ -21,10 +21,20 @@ void	*routine(void *args)
 	{
 		while (instance->philo_dead == FALSE)
 		{
-			//if (routine_execute(instance, i) == FALSE)
+			printf("Philo num : %d \n ", instance->philo[i].id);
+			if (routine_execute(instance, i) == FALSE)
+				printf("end !");
 				break ;
 		}
 	}
 	return (NULL);
+}
+
+int routine_execute(t_config *instance, int i)
+{
+	if(philo_eat(instance, i) == FALSE)
+		return (FALSE);
+
+	return (TRUE);
 }
 
