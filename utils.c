@@ -35,18 +35,18 @@ int	create_threads(t_config *instance)
 	
 	while (i <= instance->num_philo)
 	{
-		instance->number_of_thread = i;
 		if(pthread_create(&instance->philo[i].thread, NULL, &routine, (void *) instance) != 0)
 			return (FALSE);
+		instance->number_of_thread = i;
 		i++;
-		// usleep(1000);
-		ft_sleep(30);
+		usleep(10);
+		//ft_sleep(40);
 	}
 	if(pthread_create(&instance->ping, NULL, &check, (void *) instance) != 0)
 		return (FALSE);
 	
-	// usleep(1000);
-	ft_sleep(30);
+	usleep(10);
+	//ft_sleep(20);
 	if (join_threads(instance) == FALSE)
 		return (FALSE);
 	return (TRUE);
@@ -62,6 +62,7 @@ int	join_threads(t_config *instance)
 		if (pthread_join(instance->philo[i].thread, NULL) != 0)
 			return (FALSE);
 		i++;
+		usleep(10);
 	}
 	
 	if (pthread_join(instance->ping, NULL) != 0)
@@ -159,12 +160,13 @@ long long	delta_time(long long time)
 	return (0);
 }
 
+
 long long	get_time(void)
 {
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec * 0.001));
+	return ((time.tv_sec * (uint64_t)1000) + (time.tv_usec / (uint64_t)1000));
 }
 
 int	philo_print(t_config *instance, int id, char *status)
