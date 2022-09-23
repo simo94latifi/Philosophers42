@@ -1,6 +1,7 @@
 #ifndef PHILO_H
 # define PHILO_H
 
+#include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
@@ -17,6 +18,8 @@
 # define THINK "is thinking"
 # define FORK "has taken a fork"
 # define DIED "died"
+
+
 typedef struct s_fork
 {
 	int				left;
@@ -29,12 +32,12 @@ typedef struct s_philosopher
     pthread_t		thread;
 
 	int				id;
+    int             fork_left;
+    int             fork_right;
     int             num_of_times_ate;
     long long       time_to_die;
     long long       time_to_eat;
     long long       time_to_sleep;
-    t_fork          *fork;
-
 
 }					t_philosopher;
 
@@ -45,6 +48,7 @@ typedef struct s_config
     int             number_of_thread;
     int             num_philo;
     int             num_of_times_eat;
+    long long       input_time_to_die;
     int             philo_dead;
     long long       timing;
 
@@ -69,9 +73,14 @@ int	        philo_print(t_config *instance, int id, char *status);
 long long	delta_time(long long time);
 
 int	philo_eat(t_config *instance, int i);
+int philo_sleep(t_config *instance, int i);
+int	philo_is_dead(t_config *instance, int *i);
+int	philo_think(t_config *instance, int i);
+
+void	*checker(void *args);
 
 int routine_execute(t_config *instance, int i);
 int drop_forks(t_config *instance, int i);
-
+void	*check(void *args);
 
 #endif

@@ -5,9 +5,12 @@ int main(int argc, char **argv)
 
     t_config demo;
 
-    create_philos(&demo, argc, argv);
 
+    create_philos(&demo, argc, argv);
+    create_forks(&demo);
     create_threads(&demo);
+    //create_forks(demo);
+
     /*
     printf(" number of philo : %d ", demo.num_philo );
     int i = 0;

@@ -7,10 +7,9 @@ int create_philos(t_config *instance, int argc, char **argv)
     int j;
     instance->num_philo = ft_atoi(argv[1]);
     instance->philo = malloc(sizeof(t_philosopher) * (instance->num_philo + 1));
+
     if (instance->philo == NULL)
         return (FALSE);
-	if (create_forks(instance) == FALSE)
-		return FALSE; 
     i = 0;	
     j= 1;
     while( j <  instance->num_philo)
@@ -42,6 +41,10 @@ int	create_threads(t_config *instance)
 		i++;
 		usleep(1000);
 	}
+	if(pthread_create(&instance->ping, NULL, &check, (void *) instance) != 0)
+		return (FALSE);
+	
+	usleep(1000);
 	if (join_threads(instance) == FALSE)
 		return (FALSE);
 	return (TRUE);
@@ -70,9 +73,11 @@ int create_forks(t_config *instance)
 	int i;
 	
 	i = 0;
-	instance->forks = malloc(sizeof(pthread_mutex_t) * instance->num_philo + 1);
+	instance->forks = malloc(sizeof(pthread_mutex_t) * (instance->num_philo + 1));
 	if(instance->forks == NULL)
 		return (FALSE);
+	
+
 	while(i < instance->num_philo)
 	{
 		if(pthread_mutex_init(&instance->forks[i], NULL) != 0)
@@ -90,13 +95,24 @@ int fill_philo_struct(t_config *instance, int lf, int rf, int argc, char **argv)
 	//instance->forks[instance->philo[lf].fork->left] = lf;
 
 
+	//(void)rf;
 
-	instance->philo[lf].fork->left = lf;
-	instance->philo[lf].fork->right = rf;
+	//instance->philo[lf]->fork->left = lf;
+	//instance->philo[lf].fork->right = rf;
+	//instance->philo[lf].fork[lf].left = 1;
+	/*
+	argv1 number_of_philosophers 
+	argv2 time_to_die 
+	argv3 time_to_eat 
+	argv4 time_to_sleep 
+	optional argv5 [number_of_times_each_philosopher_must_eat]
+	*/
+	instance->philo[lf].fork_left = lf;
+	instance->philo[lf].fork_right = rf;
 
     if (argc == 5 || argc == 6)
 	{
-		instance->philo[lf].time_to_die = ft_atoi(argv[2]);
+		instance->input_time_to_die = ft_atoi(argv[2]);
 		instance->philo[lf].time_to_eat = ft_atoi(argv[3]);
 		instance->philo[lf].time_to_sleep = ft_atoi(argv[4]);
 		instance->num_of_times_eat = -1;
