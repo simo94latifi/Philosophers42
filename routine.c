@@ -38,7 +38,7 @@ int routine_execute(t_config *instance, int i)
 
 	if (instance->num_of_times_eat != instance->philo[i].num_of_times_ate)
 	{
-		if (philo_sleep(instance, i) == FALSE)
+		if (philo_sleep(instance, i ) == FALSE)
 			return (FALSE);
 		
 		if (philo_think(instance, i) == FALSE)
@@ -55,7 +55,7 @@ void	*check(void *args)
 	int		i;
 
 	instance = (t_config *)args;
-	i = 0;
+	i = 1;
 	if (instance->num_of_times_eat > 0)
 	{
 		while (instance->num_of_times_eat > instance->philo[i].num_of_times_ate && instance->philo_dead == FALSE)

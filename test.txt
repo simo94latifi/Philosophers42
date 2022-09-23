@@ -4,3 +4,5 @@
 5 philo 400 time per morire 200 magiare 200 dromire 
 
 number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+
+eat -> sleep -> think 

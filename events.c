@@ -15,7 +15,8 @@ int	philo_eat(t_config *instance, int i)
 		return (FALSE);
 	instance->philo[i].time_to_die = get_time();
 	
-    usleep(instance->philo[i].time_to_eat * 1000);
+    //usleep(instance->philo[i].time_to_eat * 1000);
+	ft_sleep(instance->philo[i].time_to_eat);
 	drop_forks(instance, i);
 	    
 	return (TRUE);
@@ -25,7 +26,8 @@ int	philo_sleep(t_config *instance, int i)
 {
 	if (philo_print(instance, i, SLEEP) == FALSE)
 		return (FALSE);
-	usleep(instance->philo[i].time_to_sleep * 1000);
+	//usleep(instance->philo[i].time_to_sleep * 1000);
+	ft_sleep(instance->philo[i].time_to_sleep);
 	return (TRUE);
 }
 
@@ -41,9 +43,9 @@ int	philo_is_dead(t_config *instance, int *i)
 	int	time;
 
 	if (*i == instance->num_philo)
-		*i = 0;
+		*i = 1;
 	time = delta_time(instance->philo[*i].time_to_die);
-	if (time > instance->input_time_to_die)
+	if (time >= instance->input_time_to_die)
 	{
 		philo_print(instance, instance->philo[*i].id, DIED);
 		instance->philo_dead = TRUE;
@@ -64,3 +66,4 @@ int drop_forks(t_config *instance, int i)
     return (TRUE);
 
 }
+

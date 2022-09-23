@@ -82,5 +82,6 @@ void	*checker(void *args);
 int routine_execute(t_config *instance, int i);
 int drop_forks(t_config *instance, int i);
 void	*check(void *args);
+void	ft_sleep(long long time);
 
 #endif
