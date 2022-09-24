@@ -13,8 +13,8 @@ void	*routine(void *args)
 	{
 		while (instance->num_of_times_eat > instance->philo[i].num_of_times_ate && instance->philo_dead == FALSE){
 			
-			printf("!");
-			//routine_execute(instance, i);
+			if (routine_execute(instance, i) == FALSE)
+				break;
 		}
 	}
 	else

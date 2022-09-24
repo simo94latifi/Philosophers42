@@ -14,3 +14,10 @@
 5 [number_of_times_each_philosopher_must_eat]
 
 eat -> sleep -> think 
+
+no one die : 5 800 200 200
+no one die : 4 410 200 200
+one philo die : 4 310 200 100
+
+optional args :
+no one die and stop at 7 iteration : 5 800 200 200 7

@@ -184,7 +184,7 @@ int	philo_print(t_config *instance, int id, char *status)
 	}
 	else
 		//printf("Philo ID : %d \n", instance->philo[id].id);
-		printf("%lld %d %s \n", now, id, status);
+		printf("%lld %d %s\n", now, id, status);
 	pthread_mutex_unlock(&instance->write);
 	return (TRUE);
 }
