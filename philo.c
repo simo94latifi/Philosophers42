@@ -1,19 +1,16 @@
 #include "philo.h"
 
 
-void ft_free(t_config *instance)
-{
 
-    free(instance->forks);
-    free(instance->philo);
-
-}
 int main(int argc, char **argv)
 {
 
     t_config demo;
     
-
+    if (!check_inputs(argc, argv)){
+      ft_putstr("Error inputs ! \n");
+      return (FALSE);
+    }
     if (create_philos(&demo, argc, argv) == FALSE)
       return (1);
     if (create_forks(&demo) == FALSE)
@@ -24,6 +21,8 @@ int main(int argc, char **argv)
     if (destroy_threads(&demo) == FALSE)
       return (1);
     ft_free(&demo);
+    
+    
     /*
     */
 
@@ -37,9 +36,7 @@ int main(int argc, char **argv)
     i++;
    }
     */
-
-
-
+   
     return (0);
 
 }

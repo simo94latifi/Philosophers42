@@ -21,13 +21,6 @@
 # define DIED "died"
 
 
-typedef struct s_fork
-{
-	int				left;
-	int				right;
-}					t_fork;
-
-
 typedef struct s_philosopher
 {
     pthread_t		thread;
@@ -36,10 +29,9 @@ typedef struct s_philosopher
     int             fork_left;
     int             fork_right;
     int             num_of_times_ate;
-    //long long       time_to_die;
+
     long long       time_to_eat;
     long long       time_to_sleep;
-
     long long       last_meal;
 
 }					t_philosopher;
@@ -55,9 +47,9 @@ typedef struct s_config
     int             philo_dead;
     long long       timing;
 
-    pthread_mutex_t	        write;
     pthread_t               ping;
     t_philosopher           *philo;
+    pthread_mutex_t	        write;
     pthread_mutex_t         *forks;
 
 }                   t_config;
@@ -75,16 +67,21 @@ int         philo_eat(t_config *instance, int i);
 int	        philo_print(t_config *instance, int id, char *status);
 long long	delta_time(long long time);
 
-int	philo_eat(t_config *instance, int i);
-int philo_sleep(t_config *instance, int i);
-int	philo_is_dead(t_config *instance, int *i);
-int	philo_think(t_config *instance, int i);
+int     	philo_eat(t_config *instance, int i);
+int         philo_sleep(t_config *instance, int i);
+int     	philo_is_dead(t_config *instance, int *i);
+int     	philo_think(t_config *instance, int i);
 
-void	*checker(void *args);
+void    	*checker(void *args);
 
-int routine_execute(t_config *instance, int i);
-int drop_forks(t_config *instance, int i);
-void	*check(void *args);
-void	ft_sleep(long long time);
-int	destroy_threads(t_config *instance);
+int        routine_execute(t_config *instance, int i);
+int        drop_forks(t_config *instance, int i);
+void	   *check(void *args);
+void	   ft_sleep(long long time);
+int	       destroy_threads(t_config *instance);
+int	       check_inputs(int argc, char **argv);
+void       ft_putchar(char c);
+void	ft_putstr(char *str);
+int	    ft_isdigit(char *str);
+void    ft_free(t_config *instance);
 #endif

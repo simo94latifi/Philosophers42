@@ -201,7 +201,7 @@ int	philo_print(t_config *instance, int id, char *status)
 		return (FALSE);
 	}
 	else
-		printf("%lld %d %s\n", now, id, status);
+		printf("%lld %d %s\n", now, id + 1, status);
 	pthread_mutex_unlock(&instance->write);
 	return (TRUE);
 }
@@ -217,3 +217,66 @@ void	ft_sleep(long long time)
 		continue ;
 }
 
+
+void	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+void	ft_putstr(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		ft_putchar(str[i]);
+		i++;
+	}
+}
+
+void ft_free(t_config *instance)
+{
+
+    free(instance->forks);
+    free(instance->philo);
+
+}
+
+int	ft_isdigit(char *str)
+{
+	int i;
+
+	i = 0;
+	while(str[i] != '\0'){
+		if (str[i] >= 48 && str[i] <= 57)
+			i++;
+		else
+			return (FALSE);
+	}
+	return (TRUE);
+}
+
+int	check_inputs(int argc, char **argv)
+{
+	if(argc == 5 || argc == 6){
+
+		if(ft_isdigit(argv[1]) && ft_atoi(argv[1]) > 0)
+			return (TRUE);
+
+		if(ft_isdigit(argv[2]) && ft_atoi(argv[2]) > 0)
+			return (TRUE);
+
+		if(ft_isdigit(argv[3]) && ft_atoi(argv[3]) > 0)
+			return (TRUE);
+
+		if(ft_isdigit(argv[4]) && ft_atoi(argv[4]) > 0)
+			return (TRUE);
+		if(argc == 6){
+			if(ft_isdigit(argv[5]) && ft_atoi(argv[5]) > 0)
+			return (TRUE);
+		}
+
+	}
+	return (FALSE);
+}
