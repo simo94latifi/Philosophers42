@@ -9,6 +9,7 @@ void	*routine(void *args)
 	instance = (t_config *)args;
 
 	i = instance->number_of_thread;
+	instance->philo[i].last_meal = get_time();
 	if (instance->num_of_times_eat > 0)
 	{
 		while (instance->num_of_times_eat > instance->philo[i].num_of_times_ate && instance->philo_dead == FALSE){
@@ -19,7 +20,6 @@ void	*routine(void *args)
 	}
 	else
 	{
-		//printf("Philo num : %d \n ", instance->philo[i].id);
 		while (instance->philo_dead == FALSE)
 		{
 			
@@ -61,7 +61,7 @@ void	*check(void *args)
 		while (instance->num_of_times_eat > instance->philo[i].num_of_times_ate && instance->philo_dead == FALSE)
 		{
 			if (philo_is_dead(instance, &i) == TRUE)
-				break ;
+				break;
 		}
 	}
 	else
@@ -69,7 +69,7 @@ void	*check(void *args)
 		while (instance->philo_dead == FALSE)
 		{
 			if (philo_is_dead(instance, &i) == TRUE)
-				break ;
+				break;
 		}
 	}
 	return (NULL);

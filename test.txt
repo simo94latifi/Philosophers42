@@ -21,3 +21,9 @@ one philo die : 4 310 200 100
 
 optional args :
 no one die and stop at 7 iteration : 5 800 200 200 7
+
+
+800 millisecondi
+1664119610252 unixtime
+
+

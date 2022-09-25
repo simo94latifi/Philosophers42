@@ -16,7 +16,8 @@
 # define EAT "is eating"
 # define SLEEP "is sleeping"
 # define THINK "is thinking"
-# define FORK "has taken a fork"
+# define FORK_LEFT "has taken a left fork"
+# define FORK_RIGHT "has taken a right fork"
 # define DIED "died"
 
 
@@ -35,9 +36,11 @@ typedef struct s_philosopher
     int             fork_left;
     int             fork_right;
     int             num_of_times_ate;
-    long long       time_to_die;
+    //long long       time_to_die;
     long long       time_to_eat;
     long long       time_to_sleep;
+
+    long long       last_meal;
 
 }					t_philosopher;
 
@@ -83,5 +86,5 @@ int routine_execute(t_config *instance, int i);
 int drop_forks(t_config *instance, int i);
 void	*check(void *args);
 void	ft_sleep(long long time);
-
+int	destroy_threads(t_config *instance);
 #endif

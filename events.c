@@ -5,16 +5,18 @@ int	philo_eat(t_config *instance, int i)
     
 	if (pthread_mutex_lock(&instance->forks[instance->philo[i].fork_left]) != 0)
 		return (FALSE);
-	if (philo_print(instance, instance->philo[i].id, FORK) == FALSE)
+	if (philo_print(instance, instance->philo[i].id, FORK_LEFT) == FALSE)
 		return (FALSE);
 	if (pthread_mutex_lock(&instance->forks[instance->philo[i].fork_right]) != 0)
 		return (FALSE);
-	if (philo_print(instance, instance->philo[i].id, FORK) == FALSE)
+	if (philo_print(instance, instance->philo[i].id, FORK_RIGHT) == FALSE)
 		return (FALSE);
 	if (philo_print(instance, instance->philo[i].id, EAT) == FALSE)
 		return (FALSE);
-	instance->philo[i].time_to_die = get_time();
 	
+	instance->philo[i].last_meal = get_time(); //105
+	//printf("last meal of philo id : %d is : %lld  time config is : %lld \n \n",instance->philo[i].id, instance->philo[i].last_meal, instance->input_time_to_die  );
+	//instance->philo[i].time_to_die = get_time();
     //usleep(instance->philo[i].time_to_eat * 1000);
 	ft_sleep(instance->philo[i].time_to_eat);
 	drop_forks(instance, i);
@@ -40,11 +42,11 @@ int	philo_think(t_config *instance, int i)
 
 int	philo_is_dead(t_config *instance, int *i)
 {
-	int	time;
+	long long	time;
 
 	if (*i == instance->num_philo)
-		*i = 1;
-	time = delta_time(instance->philo[*i].time_to_die);
+		*i = 0;
+	time = delta_time(instance->philo[*i].last_meal);
 	if (time >= instance->input_time_to_die)
 	{
 		philo_print(instance, instance->philo[*i].id, DIED);

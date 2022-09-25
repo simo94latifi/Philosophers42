@@ -10,15 +10,15 @@ int create_philos(t_config *instance, int argc, char **argv)
 
     if (instance->philo == NULL)
         return (FALSE);
-    i = 1;	
-    j= 2;
-    while( j <=  instance->num_philo)
+    i = 0;	
+    j= 1;
+    while( j <  instance->num_philo)
     {
         fill_philo_struct(instance, i, j, argc, argv);
 		j++;
         i++;
     }
-    j = 1;
+    j = 0;
 	fill_philo_struct(instance, i, j, argc, argv);
 	return (TRUE);
 }
@@ -27,25 +27,28 @@ int	create_threads(t_config *instance)
 {
 	int i;
 
-	i = 1;
+	i = 0;
 	instance->philo_dead = FALSE;
-	instance->timing = get_time();
+	instance->timing = get_time(); //100
 	if(pthread_mutex_init(&instance->write, NULL) != 0)
 		return (FALSE);
 	
-	while (i <= instance->num_philo)
+	usleep(10);
+	//ft_sleep(10);
+	while (i < instance->num_philo)
 	{
 		if(pthread_create(&instance->philo[i].thread, NULL, &routine, (void *) instance) != 0)
 			return (FALSE);
 		instance->number_of_thread = i;
 		i++;
 		usleep(10);
-		//ft_sleep(40);
+		//ft_sleep(10);
 	}
 	if(pthread_create(&instance->ping, NULL, &check, (void *) instance) != 0)
 		return (FALSE);
-	
 	usleep(10);
+
+	
 	//ft_sleep(20);
 	if (join_threads(instance) == FALSE)
 		return (FALSE);
@@ -56,8 +59,8 @@ int	join_threads(t_config *instance)
 {
 	int	i;
 
-	i = 1;
-	while (i <= instance->num_philo)
+	i = 0;
+	while (i < instance->num_philo)
 	{
 		if (pthread_join(instance->philo[i].thread, NULL) != 0)
 			return (FALSE);
@@ -71,17 +74,32 @@ int	join_threads(t_config *instance)
 	return (TRUE);
 }
 
+int	destroy_threads(t_config *instance)
+{
+	int	i;
+
+	i = 0;
+	while (i < instance->num_philo)
+	{
+		pthread_mutex_destroy(&instance->forks[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&instance->write);
+	return (TRUE);
+}
+
+
 int create_forks(t_config *instance)
 {
 	int i;
 	
-	i = 1;
+	i = 0;
 	instance->forks = malloc(sizeof(pthread_mutex_t) * instance->num_philo);
 	if(instance->forks == NULL)
 		return (FALSE);
 	
 
-	while(i <= instance->num_philo)
+	while(i < instance->num_philo)
 	{
 		if(pthread_mutex_init(&instance->forks[i], NULL) != 0)
 			return (FALSE);
@@ -183,7 +201,6 @@ int	philo_print(t_config *instance, int id, char *status)
 		return (FALSE);
 	}
 	else
-		//printf("Philo ID : %d \n", instance->philo[id].id);
 		printf("%lld %d %s\n", now, id, status);
 	pthread_mutex_unlock(&instance->write);
 	return (TRUE);
@@ -199,3 +216,4 @@ void	ft_sleep(long long time)
 	while (get_time() < tmp + time)
 		continue ;
 }
+
